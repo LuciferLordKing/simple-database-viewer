@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from tkinter import Tk, Label, Entry, Button
+from tkinter import Tk, Label, Entry, Button, filedialog, END
 from sqlite3 import connect
 
 global table_label, tables, file_location_entry, sql_entry
@@ -32,6 +32,13 @@ def entries_setup():
     sql_entry = Entry(text = 'SELECT * FROM TABLE', bg = '#F3D8FF', fg = '#99004D')
     sql_entry.grid(row = 1, column = 1)
 
+
+def browsefunc():
+    global file_location_entry
+    filename = filedialog.askopenfilename(filetypes=(
+        ('database files', '*.db'), ('All files', '*.*')))
+    file_location_entry.delete(0, END)
+    file_location_entry.insert(END, filename)
 
 def run():
     def running_sql(sql):
@@ -98,7 +105,12 @@ labels_setup()
 
 entries_setup()
 
-run_button = Button(text = 'Run', bg = "#FF00FF", width = 2, height = 1, command = run)
-run_button.grid(row = 0, column = 2, rowspan = 2)
+location_button = Button(text = 'Location', bg = "#FF00FF",
+                         width = 6, height = 1, command = browsefunc)
+location_button.grid(row = 0, column = 2, rowspan = 1)
+
+run_button = Button(text = 'Run', bg = "#FF00FF",
+                        width = 6, height = 1, command = run)
+run_button.grid(row = 1, column = 2, rowspan = 1)
 
 root.mainloop()
